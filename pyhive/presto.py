@@ -80,7 +80,7 @@ class Cursor(common.DBAPICursor):
     visible by other cursors or connections.
     """
 
-    def __init__(self, host, port='8080', username=None, catalog='hive',
+    def __init__(self, host, port='8080', username=None, principle_username=None, catalog='hive',
                  schema='default', poll_interval=1, source='pyhive', session_props=None,
                  protocol='http', password=None, requests_session=None, requests_kwargs=None,
                  KerberosRemoteServiceName=None, KerberosPrincipal=None,
@@ -90,6 +90,7 @@ class Cursor(common.DBAPICursor):
         :param host: hostname to connect to, e.g. ``presto.example.com``
         :param port: int -- port, defaults to 8080
         :param username: string -- defaults to system user name
+        :param principle_username: string -- defaults to ``username`` argument
         :param catalog: string -- defaults to ``hive``
         :param schema: string -- defaults to ``default``
         :param poll_interval: int -- how often to ask the Presto REST interface for a progress
@@ -122,7 +123,7 @@ class Cursor(common.DBAPICursor):
         # Config
         self._host = host
         self._port = port
-        self._username = username or getpass.getuser()
+        self._username = principle_username or username or getpass.getuser()
         self._catalog = catalog
         self._schema = schema
         self._arraysize = 1
